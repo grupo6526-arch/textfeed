@@ -46,18 +46,20 @@ body {
 
 <body>
 
-<div class="container" id="feed"></div>
+<div class="container">
+    <div id="feed"></div>
+</div>
 
 <script>
 
 async function getQuote() {
     try {
-        const res = await fetch("https://api.quotable.io/random");
+        const res = await fetch("https://zenquotes.io/api/random");
         const data = await res.json();
 
         return {
-            text: data.content,
-            author: data.author,
+            text: data[0].q,
+            author: data[0].a,
             category: "Cita"
         };
 
