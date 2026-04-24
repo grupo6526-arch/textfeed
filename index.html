@@ -49,17 +49,25 @@ body {
 <div class="container" id="feed"></div>
 
 <script>
-const data = [
-    { text: "La imaginación es más importante que el conocimiento.", author: "Albert Einstein", category: "Ciencia" },
-    { text: "El que tiene salud, tiene esperanza; y el que tiene esperanza, lo tiene todo.", author: "Proverbio árabe", category: "Salud" },
-    { text: "La historia es un conjunto de mentiras sobre las que se ha llegado a un acuerdo.", author: "Napoleón Bonaparte", category: "Historia" },
-    { text: "Somos lo que hacemos repetidamente. La excelencia no es un acto, sino un hábito.", author: "Aristóteles", category: "Filosofía" },
-    { text: "Dormir menos de 6 horas aumenta el riesgo cardiovascular.", author: "Estudios clínicos", category: "Salud" },
-    { text: "El Imperio Romano cayó en el 476 d.C.", author: "Historia", category: "Historia" }
-];
 
-function getRandomPost() {
-    return data[Math.floor(Math.random() * data.length)];
+async function getQuote() {
+    try {
+        const res = await fetch("https://api.quotable.io/random");
+        const data = await res.json();
+
+        return {
+            text: data.content,
+            author: data.author,
+            category: "Cita"
+        };
+
+    } catch (e) {
+        return {
+            text: "Error cargando cita online",
+            author: "Sistema",
+            category: "Error"
+        };
+    }
 }
 
 function createPost(post) {
@@ -75,21 +83,23 @@ function createPost(post) {
     return div;
 }
 
-function loadPosts(count = 5) {
+async function loadPosts(count = 5) {
     const feed = document.getElementById("feed");
 
     for (let i = 0; i < count; i++) {
-        feed.appendChild(createPost(getRandomPost()));
+        const post = await getQuote();
+        feed.appendChild(createPost(post));
     }
 }
 
 window.addEventListener("scroll", () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-        loadPosts(5);
+        loadPosts(3);
     }
 });
 
 loadPosts(10);
+
 </script>
 
 </body>
