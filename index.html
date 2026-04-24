@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TextoFeed</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: white;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 10px;
+}
+
+.post {
+    background: #1c1c1c;
+    margin-bottom: 12px;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.quote {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.author {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.category {
+    font-size: 12px;
+    color: #4caf50;
+    margin-bottom: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="feed"></div>
+
+<script>
+const data = [
+    { text: "La imaginación es más importante que el conocimiento.", author: "Albert Einstein", category: "Ciencia" },
+    { text: "El que tiene salud, tiene esperanza; y el que tiene esperanza, lo tiene todo.", author: "Proverbio árabe", category: "Salud" },
+    { text: "La historia es un conjunto de mentiras sobre las que se ha llegado a un acuerdo.", author: "Napoleón Bonaparte", category: "Historia" },
+    { text: "Somos lo que hacemos repetidamente. La excelencia no es un acto, sino un hábito.", author: "Aristóteles", category: "Filosofía" },
+    { text: "Dormir menos de 6 horas aumenta el riesgo cardiovascular.", author: "Estudios clínicos", category: "Salud" },
+    { text: "El Imperio Romano cayó en el 476 d.C.", author: "Historia", category: "Historia" }
+];
+
+function getRandomPost() {
+    return data[Math.floor(Math.random() * data.length)];
+}
+
+function createPost(post) {
+    const div = document.createElement("div");
+    div.className = "post";
+
+    div.innerHTML = `
+        <div class="category">${post.category}</div>
+        <div class="quote">"${post.text}"</div>
+        <div class="author">— ${post.author}</div>
+    `;
+
+    return div;
+}
+
+function loadPosts(count = 5) {
+    const feed = document.getElementById("feed");
+
+    for (let i = 0; i < count; i++) {
+        feed.appendChild(createPost(getRandomPost()));
+    }
+}
+
+window.addEventListener("scroll", () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+        loadPosts(5);
+    }
+});
+
+loadPosts(10);
+</script>
+
+</body>
+</html>
